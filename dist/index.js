@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const utils_1 = require("./utils");
 const oneAccountServicesDefaultConfig = {
     clientId: '',
-    apiURL: 'http://localhost:3000/v1',
+    apiURL: 'https://api.one-account.io/v1',
 };
 class OneAccountServices {
     constructor() {

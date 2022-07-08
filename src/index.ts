@@ -143,15 +143,20 @@ class OneAccountServices {
           origin: window.location.origin,
         };
 
-        const query = objectToQuery(queryObject);
+        const query = objectToQuery(queryObject);          
 
-        document.body.innerHTML += `<iframe
-          title="One Account"
-          id="one-account-one-tap-sign-in"
-          src="${this._parent._parent.config.apiURL}/iframe/one-tap-sign-in?${query}"
-          style="width: 470px; height: 400px; position: fixed; top: 0px; right: 0px; z-index: 9999"
-          frameborder="0"
-          ></iframe>`;
+        const iframe = document.createElement('iframe');
+        iframe.title = 'One Account';
+        iframe.id = 'one-account-one-tap-sign-in';
+        iframe.src = `${this._parent._parent.config.apiURL}/iframe/one-tap-sign-in?${query}`;
+        iframe.style.width = '470px';
+        iframe.style.height = '400px';
+        iframe.style.position = 'fixed';
+        iframe.style.top = '0px';
+        iframe.style.right = '0px';
+        iframe.style.zIndex = '9999';
+        iframe.style.border = 'none';
+        document.body.appendChild(iframe);
       };
       hide = () => {
         const element = document.getElementById('one-account-one-tap-sign-in');

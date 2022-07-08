@@ -17,19 +17,20 @@ export interface OneAccountSignInConfig {
     saveCodeVerifier: boolean;
 }
 export interface OneAccountTokenData {
-    access_token: string;
-    token_type: string;
+    accessToken: string;
+    tokenType: string;
+    expiresIn: number;
 }
 export interface OneAccountUserData {
     sub: string;
-    first_name?: string;
-    last_name?: string;
-    full_name?: string;
+    firstName?: string;
+    lastName?: string;
+    fullName?: string;
     email?: string;
-    profile_picture?: string;
+    profilePicture?: string;
 }
 export interface OneAccountOnSuccessResult {
-    tokenData: {};
+    tokenData: OneAccountTokenData;
     userData: OneAccountUserData;
 }
 export interface OneAccountMessage {

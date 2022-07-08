@@ -30,11 +30,8 @@ class OneAccountServices {
   // };
 
   private handleEvent = async ({ data: message }: { data: OneAccountMessage }) => {
-    console.log('message', message);
     if (!message) return;
     if (message.type === 'oneAccountSignInSuccess') {
-      console.log('signIn', message.data);
-
       const body = {
         client_id: this.config.clientId,
         grant_type: 'authorization_code',
@@ -64,8 +61,19 @@ class OneAccountServices {
       const userData = await res2.json();
 
       this.signIn._onSuccessCallback({
-        userData,
-        tokenData,
+        userData: {
+          sub: userData.sub,
+          fullName: userData.full_name,
+          firstName: userData.first_name,
+          lastName: userData.last_name,
+          email: userData.email,
+          profilePicture: userData.profile_picture,
+        },
+        tokenData: {
+          accessToken: tokenData.access_token,
+          tokenType: tokenData.token_type,
+          expiresIn: tokenData.expires_in
+        },
       });
       this.signIn.oneTap.hide();
     } else if (message.type === 'removeOneAccountOneTapSignInIframe') {
@@ -81,7 +89,7 @@ class OneAccountServices {
 
     _onSuccessCallback: OneAccountOnSuccessCallbackType = (result: OneAccountOnSuccessResult) => {
       console.log('Successfully signed in with One Account.', result);
-      document.write(`Hi, ${result.userData.first_name}!`);
+      document.write(`Hi, ${result.userData.firstName}!`);
     };
 
     onSuccess = (cb: OneAccountOnSuccessCallbackType) => {
@@ -90,13 +98,15 @@ class OneAccountServices {
 
     oneTap = new (class OneAccountOneTap {
       _parent: OneAccountSignIn;
+      visible: boolean = false;
       constructor(parent: OneAccountSignIn) {
         this._parent = parent;
       }
       show = async ({ autoSignIn = true } = {}) => {
-        if (document.getElementById('one-account-one-tap-sign-in')) {
-          this.hide();
+        if (this.visible) {
+          return;
         }
+        this.visible = true;
 
         this._parent._parent.codeVerifier = generateCodeVerifier();
         const codeChallenge = await generateCodeChallenge(this._parent._parent.codeVerifier);
@@ -143,7 +153,11 @@ class OneAccountServices {
           origin: window.location.origin,
         };
 
-        const query = objectToQuery(queryObject);          
+        const query = objectToQuery(queryObject);
+
+        if (document.getElementById('one-account-one-tap-sign-in')) {
+          return;
+        }
 
         const iframe = document.createElement('iframe');
         iframe.title = 'One Account';
@@ -156,9 +170,11 @@ class OneAccountServices {
         iframe.style.right = '0px';
         iframe.style.zIndex = '9999';
         iframe.style.border = 'none';
+
         document.body.appendChild(iframe);
       };
       hide = () => {
+        this.visible = false;
         const element = document.getElementById('one-account-one-tap-sign-in');
         if (!element) return;
         element.parentNode?.removeChild(element);

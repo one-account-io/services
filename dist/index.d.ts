@@ -13,6 +13,7 @@ declare class OneAccountServices {
         onSuccess: (cb: OneAccountOnSuccessCallbackType) => void;
         oneTap: {
             _parent: any;
+            visible: boolean;
             show: ({ autoSignIn }?: {
                 autoSignIn?: boolean | undefined;
             }) => Promise<void>;

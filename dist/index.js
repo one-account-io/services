@@ -28,11 +28,9 @@ class OneAccountServices {
         //   document.cookie = `codeVerifier=${codeVerifier}; expires=${expires.toUTCString()};path=/`;
         // };
         this.handleEvent = ({ data: message }) => __awaiter(this, void 0, void 0, function* () {
-            console.log('message', message);
             if (!message)
                 return;
             if (message.type === 'oneAccountSignInSuccess') {
-                console.log('signIn', message.data);
                 const body = {
                     client_id: this.config.clientId,
                     grant_type: 'authorization_code',
@@ -56,8 +54,19 @@ class OneAccountServices {
                 });
                 const userData = yield res2.json();
                 this.signIn._onSuccessCallback({
-                    userData,
-                    tokenData,
+                    userData: {
+                        sub: userData.sub,
+                        fullName: userData.full_name,
+                        firstName: userData.first_name,
+                        lastName: userData.last_name,
+                        email: userData.email,
+                        profilePicture: userData.profile_picture,
+                    },
+                    tokenData: {
+                        accessToken: tokenData.access_token,
+                        tokenType: tokenData.token_type,
+                        expiresIn: tokenData.expires_in
+                    },
                 });
                 this.signIn.oneTap.hide();
             }
@@ -69,17 +78,19 @@ class OneAccountServices {
             constructor(parent) {
                 this._onSuccessCallback = (result) => {
                     console.log('Successfully signed in with One Account.', result);
-                    document.write(`Hi, ${result.userData.first_name}!`);
+                    document.write(`Hi, ${result.userData.firstName}!`);
                 };
                 this.onSuccess = (cb) => {
                     this._onSuccessCallback = cb;
                 };
                 this.oneTap = new (class OneAccountOneTap {
                     constructor(parent) {
+                        this.visible = false;
                         this.show = ({ autoSignIn = true } = {}) => __awaiter(this, void 0, void 0, function* () {
-                            if (document.getElementById('one-account-one-tap-sign-in')) {
-                                this.hide();
+                            if (this.visible) {
+                                return;
                             }
+                            this.visible = true;
                             this._parent._parent.codeVerifier = (0, utils_1.generateCodeVerifier)();
                             const codeChallenge = yield (0, utils_1.generateCodeChallenge)(this._parent._parent.codeVerifier);
                             const w = 490;
@@ -119,6 +130,9 @@ class OneAccountServices {
                                 origin: window.location.origin,
                             };
                             const query = (0, utils_1.objectToQuery)(queryObject);
+                            if (document.getElementById('one-account-one-tap-sign-in')) {
+                                return;
+                            }
                             const iframe = document.createElement('iframe');
                             iframe.title = 'One Account';
                             iframe.id = 'one-account-one-tap-sign-in';
@@ -134,6 +148,7 @@ class OneAccountServices {
                         });
                         this.hide = () => {
                             var _a;
+                            this.visible = false;
                             const element = document.getElementById('one-account-one-tap-sign-in');
                             if (!element)
                                 return;

@@ -86,7 +86,7 @@ class OneAccountServices {
                 this.oneTap = new (class OneAccountOneTap {
                     constructor(parent) {
                         this.visible = false;
-                        this.show = ({ autoSignIn = true } = {}) => __awaiter(this, void 0, void 0, function* () {
+                        this.show = ({ autoSignIn = true, includeGrantedScopes = true, associateSession = true } = {}) => __awaiter(this, void 0, void 0, function* () {
                             if (this.visible) {
                                 return;
                             }
@@ -118,7 +118,7 @@ class OneAccountServices {
                                 client_id: this._parent._parent.config.clientId,
                                 scope: 'openid+1a.fullname.view+1a.email.view+1a.profilepicture.view',
                                 state: '',
-                                include_granted_scopes: true,
+                                include_granted_scopes: includeGrantedScopes,
                                 code_challenge: codeChallenge,
                                 code_challenge_method: 'S256',
                                 flow: 'popup',
@@ -128,6 +128,7 @@ class OneAccountServices {
                                 popup_top: top,
                                 auto_sign_in: autoSignIn,
                                 origin: window.location.origin,
+                                associate_session: associateSession,
                             };
                             const query = (0, utils_1.objectToQuery)(queryObject);
                             if (document.getElementById('one-account-one-tap-sign-in')) {

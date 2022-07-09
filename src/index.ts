@@ -102,7 +102,11 @@ class OneAccountServices {
       constructor(parent: OneAccountSignIn) {
         this._parent = parent;
       }
-      show = async ({ autoSignIn = true } = {}) => {
+      show = async ({
+        autoSignIn = true,
+        includeGrantedScopes = true,
+        associateSession = true
+      } = {}) => {
         if (this.visible) {
           return;
         }
@@ -141,7 +145,7 @@ class OneAccountServices {
           client_id: this._parent._parent.config.clientId,
           scope: 'openid+1a.fullname.view+1a.email.view+1a.profilepicture.view',
           state: '',
-          include_granted_scopes: true,
+          include_granted_scopes: includeGrantedScopes,
           code_challenge: codeChallenge,
           code_challenge_method: 'S256',
           flow: 'popup',
@@ -151,6 +155,7 @@ class OneAccountServices {
           popup_top: top,
           auto_sign_in: autoSignIn,
           origin: window.location.origin,
+          associate_session: associateSession,
         };
 
         const query = objectToQuery(queryObject);

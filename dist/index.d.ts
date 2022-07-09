@@ -14,8 +14,10 @@ declare class OneAccountServices {
         oneTap: {
             _parent: any;
             visible: boolean;
-            show: ({ autoSignIn }?: {
+            show: ({ autoSignIn, includeGrantedScopes, associateSession }?: {
                 autoSignIn?: boolean | undefined;
+                includeGrantedScopes?: boolean | undefined;
+                associateSession?: boolean | undefined;
             }) => Promise<void>;
             hide: () => void;
         };

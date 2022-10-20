@@ -1,6 +1,6 @@
 {
   "name": "@one-account/services",
-  "version": "1.0.3",
+  "version": "1.0.5",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -15,7 +15,6 @@
     "authentication",
     "authorization"
   ],
-
   "author": "Tim Tisak",
   "license": "MIT",
   "bugs": {

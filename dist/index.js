@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,8 +7,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const utils_1 = require("./utils");
+import { generateCodeChallenge, generateCodeVerifier, objectToQuery } from './utils';
 const oneAccountServicesDefaultConfig = {
     clientId: '',
     apiURL: 'https://api.one-account.io/v1',
@@ -39,7 +37,7 @@ class OneAccountServices {
                     code: message.data.code,
                     code_verifier: this.codeVerifier,
                 };
-                const searchParams = (0, utils_1.objectToQuery)(body);
+                const searchParams = objectToQuery(body);
                 const res = yield fetch(`${this.config.apiURL}/oauth/token`, {
                     method: 'POST',
                     body: searchParams,
@@ -91,8 +89,8 @@ class OneAccountServices {
                                 return;
                             }
                             this.visible = true;
-                            this._parent._parent.codeVerifier = (0, utils_1.generateCodeVerifier)();
-                            const codeChallenge = yield (0, utils_1.generateCodeChallenge)(this._parent._parent.codeVerifier);
+                            this._parent._parent.codeVerifier = generateCodeVerifier();
+                            const codeChallenge = yield generateCodeChallenge(this._parent._parent.codeVerifier);
                             const w = 490;
                             const h = 860;
                             const dualScreenLeft = window.screenLeft !== undefined ? window.screenLeft : window.screenX;
@@ -130,7 +128,7 @@ class OneAccountServices {
                                 origin: window.location.origin,
                                 associate_session: associateSession,
                             };
-                            const query = (0, utils_1.objectToQuery)(queryObject);
+                            const query = objectToQuery(queryObject);
                             if (document.getElementById('one-account-one-tap-sign-in')) {
                                 return;
                             }
@@ -165,4 +163,4 @@ class OneAccountServices {
         window.addEventListener('message', this.handleEvent, false);
     }
 }
-exports.default = new OneAccountServices();
+export default new OneAccountServices();

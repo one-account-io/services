@@ -63,11 +63,15 @@ class OneAccountServices {
       this.signIn._onSuccessCallback({
         userData: {
           sub: userData.sub,
-          fullName: userData.full_name,
-          firstName: userData.first_name,
-          lastName: userData.last_name,
           email: userData.email,
-          profilePicture: userData.profile_picture,
+          emailVerified: userData.email_verified,
+          givenName: userData.given_name,
+          familyName: userData.family_name,
+          name: userData.name,
+          picture: userData.picture,
+          birthdate: userData.birthdate,
+          gender: userData.gender,
+          locale: userData.locale,
         },
         tokenData: {
           accessToken: tokenData.access_token,
@@ -89,7 +93,7 @@ class OneAccountServices {
 
     _onSuccessCallback: OneAccountOnSuccessCallbackType = (result: OneAccountOnSuccessResult) => {
       console.log('Successfully signed in with One Account.', result);
-      document.write(`Hi, ${result.userData.firstName}!`);
+      document.write(`Hi, ${result.userData.givenName}!`);
     };
 
     onSuccess = (cb: OneAccountOnSuccessCallbackType) => {

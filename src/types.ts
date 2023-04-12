@@ -26,11 +26,15 @@ export interface OneAccountTokenData {
 
 export interface OneAccountUserData {
   sub: string;
-  firstName?: string;
-  lastName?: string;
-  fullName?: string;
   email?: string;
-  profilePicture?: string;
+  emailVerified?: boolean;
+  givenName?: string;
+  familyName?: string;
+  name?: string;
+  picture?: string;
+  birthdate?: string;
+  gender?: 'male' | 'female' | 'other';
+  locale?: string;
 }
 
 export interface OneAccountOnSuccessResult {
@@ -38,11 +42,9 @@ export interface OneAccountOnSuccessResult {
   userData: OneAccountUserData;
 }
 
-
-
 export interface OneAccountMessage {
-  type: string,
+  type: string;
   data: {
-    code: string
-  }
+    code: string;
+  };
 }

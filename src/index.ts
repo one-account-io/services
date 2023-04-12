@@ -72,7 +72,7 @@ class OneAccountServices {
         tokenData: {
           accessToken: tokenData.access_token,
           tokenType: tokenData.token_type,
-          expiresIn: tokenData.expires_in
+          expiresIn: tokenData.expires_in,
         },
       });
       this.signIn.oneTap.hide();
@@ -102,11 +102,7 @@ class OneAccountServices {
       constructor(parent: OneAccountSignIn) {
         this._parent = parent;
       }
-      show = async ({
-        autoSignIn = true,
-        includeGrantedScopes = true,
-        associateSession = true
-      } = {}) => {
+      show = async ({ autoSignIn = true, includeGrantedScopes = true, associateSession = true } = {}) => {
         if (this.visible) {
           return;
         }
@@ -143,7 +139,7 @@ class OneAccountServices {
           grant_type: 'authorization_code',
           response_type: 'code',
           client_id: this._parent._parent.config.clientId,
-          scope: 'openid+1a.fullname.view+1a.email.view+1a.profilepicture.view',
+          scope: 'openid+profile+email',
           state: '',
           include_granted_scopes: includeGrantedScopes,
           code_challenge: codeChallenge,
@@ -195,6 +191,5 @@ class OneAccountServices {
   //   requestAdditionalVerification = () => {};
   // })();
 }
-
 
 export default new OneAccountServices();

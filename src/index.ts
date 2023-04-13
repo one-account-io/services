@@ -72,9 +72,23 @@ class OneAccountServices {
           birthdate: userData.birthdate,
           gender: userData.gender,
           locale: userData.locale,
+          nickname: userData.nickname,
+          phoneNumber: userData.phone_number,
+          phoneNumberVerified: userData.phone_number_verified,
+          address: !!userData.address
+            ? {
+                formatted: userData.address?.formatted,
+                postalCode: userData.address?.postal_code,
+                streetAddress: userData.address?.street_address,
+                region: userData.address?.region,
+                country: userData.address?.country,
+                locality: userData.address?.locality,
+              }
+            : undefined,
         },
         tokenData: {
           accessToken: tokenData.access_token,
+          idToken: tokenData.id_token,
           tokenType: tokenData.token_type,
           expiresIn: tokenData.expires_in,
         },

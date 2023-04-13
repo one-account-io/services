@@ -20,6 +20,7 @@ export interface OneAccountSignInConfig {
 
 export interface OneAccountTokenData {
   accessToken: string;
+  idToken: string;
   tokenType: string;
   expiresIn: number;
 }
@@ -35,6 +36,17 @@ export interface OneAccountUserData {
   birthdate?: string;
   gender?: 'male' | 'female' | 'other';
   locale?: string;
+  nickname?: string;
+  phoneNumber?: string;
+  phoneNumberVerified?: boolean;
+  address?: {
+    formatted?: string | null;
+    postalCode?: string | null;
+    streetAddress?: string | null;
+    region?: string | null;
+    country?: string | null;
+    locality?: string | null;
+  };
 }
 
 export interface OneAccountOnSuccessResult {

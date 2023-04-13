@@ -26,6 +26,7 @@ class OneAccountServices {
         //   document.cookie = `codeVerifier=${codeVerifier}; expires=${expires.toUTCString()};path=/`;
         // };
         this.handleEvent = ({ data: message }) => __awaiter(this, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e, _f;
             if (!message)
                 return;
             if (message.type === 'oneAccountSignInSuccess') {
@@ -63,9 +64,23 @@ class OneAccountServices {
                         birthdate: userData.birthdate,
                         gender: userData.gender,
                         locale: userData.locale,
+                        nickname: userData.nickname,
+                        phoneNumber: userData.phone_number,
+                        phoneNumberVerified: userData.phone_number_verified,
+                        address: !!userData.address
+                            ? {
+                                formatted: (_a = userData.address) === null || _a === void 0 ? void 0 : _a.formatted,
+                                postalCode: (_b = userData.address) === null || _b === void 0 ? void 0 : _b.postal_code,
+                                streetAddress: (_c = userData.address) === null || _c === void 0 ? void 0 : _c.street_address,
+                                region: (_d = userData.address) === null || _d === void 0 ? void 0 : _d.region,
+                                country: (_e = userData.address) === null || _e === void 0 ? void 0 : _e.country,
+                                locality: (_f = userData.address) === null || _f === void 0 ? void 0 : _f.locality,
+                            }
+                            : undefined,
                     },
                     tokenData: {
                         accessToken: tokenData.access_token,
+                        idToken: tokenData.id_token,
                         tokenType: tokenData.token_type,
                         expiresIn: tokenData.expires_in,
                     },
